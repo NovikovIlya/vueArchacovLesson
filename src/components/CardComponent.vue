@@ -1,13 +1,18 @@
 <script setup lang="ts">
-defineProps<{
+import {inject} from 'vue'
+
+const props = defineProps<{
+  id:number,
   imageUrl: string
   title: string
   price: number
   isFavorite: boolean
   isAdded: boolean
   onClickAdd: () => void
-  onClickFavorite: () => void
+  onClickFavorite: any
 }>()
+
+
 </script>
 
 <template>

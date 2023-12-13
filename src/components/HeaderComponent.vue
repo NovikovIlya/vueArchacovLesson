@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+const emit = defineEmits(['openDrawer'])
 </script>
 
 <template>
@@ -13,7 +13,7 @@
       </div>
 
       <ul class="flex items-center gap-10">
-        <li class=" cursor-pointer  gap-3 text-gray-400 hover:text-black">
+        <li @click="emit('openDrawer')" class=" cursor-pointer  gap-3 text-gray-400 hover:text-black">
           <img src="/cart.svg" alt="cart" />
           <b>1205 руб</b>
         </li>

@@ -23,7 +23,6 @@ import DrawerList from './DrawerList.vue'
         </div>
 
         <button
-          disabled=""
           class="disabled:bg-slate-400 bg-lime-500 w-full rounded-xl py-3 text-white cursor-pointer"
         >
           Оформить заказ
