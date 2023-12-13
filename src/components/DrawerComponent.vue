@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import DrawerHead from './DrawerHead.vue'
 import DrawerList from './DrawerList.vue'
+
+const props = defineProps<{
+  totalPrice: number,
+  vat: number
+}>()
 </script>
 
 <template>
@@ -13,13 +18,13 @@ import DrawerList from './DrawerList.vue'
         <div class="flex">
           <span>Итого:</span>
           <div class="flex-1 border-b border-dashed"></div>
-          <b>129990</b>
+          <b>{{ props.totalPrice }}</b>
         </div>
 
         <div class="flex">
           <span>Налог 5%:</span>
           <div class="flex-1 border-b border-dashed"></div>
-          <b>900</b>
+          <b>{{   props.vat }}</b>
         </div>
 
         <button

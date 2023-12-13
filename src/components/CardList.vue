@@ -1,18 +1,14 @@
 <script setup lang="ts">
-
 import Card from './CardComponent.vue'
 
 defineProps<{
   items: any
 }>()
-const emit = defineEmits(['addToFavorite'])
+const emit = defineEmits(['addToFavorite', 'addToCart'])
 
-
-const onClick = ()=>{
+const onClick = () => {
   console.log('Добавить')
- 
 }
-
 </script>
 
 <template>
@@ -21,14 +17,14 @@ const onClick = ()=>{
       v-for="item in items"
       :key="item.id"
       :id="items.id"
-      :onClickFavorite="()=>emit('addToFavorite',item)"
-      :onClickAdd="onClick"
+      :onClickFavorite="() => emit('addToFavorite', item)"
+      :onClickAdd="() => emit('addToCart', item)"
       :isFavorite="item.isFavorite"
-      :isAdded="true"
+      :isAdded="item.isAdded"
       :price="item.price"
       :title="item.title"
       :imageUrl="item.imageUrl"
-      
+
     />
   </div>
 </template>

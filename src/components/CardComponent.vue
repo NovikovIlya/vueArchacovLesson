@@ -2,7 +2,7 @@
 import {inject} from 'vue'
 
 const props = defineProps<{
-  id:number,
+  id:any,
   imageUrl: string
   title: string
   price: number

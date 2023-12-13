@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted, provide, ref, watch } from 'vue'
+import { computed, onMounted, provide, ref, watch } from 'vue'
 import axios from 'axios'
 
 import Header from './components/HeaderComponent.vue'
 import CardList from './components/CardList.vue'
 import Drawer from './components/DrawerComponent.vue'
-import { type paramsType } from './types/index';
+import { type paramsType } from './types/index'
 
 //Список товаров
 const cart = ref([])
@@ -16,16 +16,54 @@ const filters = ref({
   searchQuery: ''
 })
 
+const totalPrice = computed(() => {
+  return cart.value.reduce((acc: number, item: any) => {
+    return acc + item.price
+  }, 0)
+})
+const vatPrice = computed(()=>{
+  return Math.round((totalPrice.value * 5)/100)
+})
 
-const addToCart = (item)=>{
-
+const onClickAddPlus = (item: any) => {
+  if (!item.isAdded) {
+    addToCart(item)
+  } else {
+    removeFromCart(item)
+  }
 }
 
-const closeDrawer = ()=>{
+const addToCart = (item: any) => {
+  //@ts-ignore
+  cart.value.push(item)
+  console.log(item)
+  item.isAdded = true
+}
+const removeFromCart = (item: any) => {
+  //@ts-ignore
+  cart.value.splice(cart.value.indexOf(item), 1)
+  item.isAdded = false
+}
+
+const createOrder = async ()=>{
+  try {
+    const { data } = await axios.post('https://829335bb705b4ce1.mokky.dev/orders', {
+      items: cart.value,
+      totalPrice: totalPrice.value
+    })
+    cart.value = []
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+    
+  }
+}
+
+const closeDrawer = () => {
   drawerOpen.value = false
 }
 
-const openDrawer = ()=>{
+const openDrawer = () => {
   drawerOpen.value = true
 }
 
@@ -108,16 +146,19 @@ onMounted(async () => {
 
 watch(filters, fetchItems, { deep: true })
 
-provide('cartActions',{
+provide('cartActions', {
+  addToCart,
+  removeFromCart,
+  cart,
   closeDrawer,
   openDrawer
 })
 </script>
 
 <template>
-  <Drawer v-if="drawerOpen"/>
+  <Drawer  v-if="drawerOpen" :totalPrice="totalPrice"  :vat="vatPrice"/>
   <div class="bg-white w-4/5 m-auto roundex-xl shadow-xl mt-14">
-    <Header @openDrawer="openDrawer"/>
+    <Header :totalPrice="totalPrice" @openDrawer="openDrawer" />
     <div class="p-10">
       <div class="flex justify-between items-center mb-10">
         <h2 class="self-baseline text-3xl font-bold">Все кроссовки</h2>
@@ -140,7 +181,7 @@ provide('cartActions',{
         </div>
       </div>
 
-      <CardList :items="items" @addToFavorite="addToFavorite" />
+      <CardList :items="items" @addToFavorite="addToFavorite" @addToCart="onClickAddPlus" />
     </div>
   </div>
 </template>
