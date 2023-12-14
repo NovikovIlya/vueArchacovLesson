@@ -6,13 +6,11 @@ defineProps<{
 }>()
 const emit = defineEmits(['addToFavorite', 'addToCart'])
 
-const onClick = () => {
-  console.log('Добавить')
-}
+
 </script>
 
 <template>
-  <div class="grid grid-cols-4 gap-5">
+  <div class="grid grid-cols-4 gap-5" v-auto-animate>
     <Card
       v-for="item in items"
       :key="item.id"
@@ -24,7 +22,6 @@ const onClick = () => {
       :price="item.price"
       :title="item.title"
       :imageUrl="item.imageUrl"
-
     />
   </div>
 </template>
