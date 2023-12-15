@@ -1,16 +1,22 @@
 <script setup lang="ts">
+import { computed, inject, ref } from 'vue'
+
 import DrawerHead from './DrawerHead.vue'
 import DrawerList from './DrawerList.vue'
-import { computed } from 'vue'
 import infoBlock from './infoBlock.vue'
 
 const props = defineProps<{
   totalPrice: number
   vat: number
-  CartButtonDisabled: boolean
+  CartButtonDisabled: boolean,
+  orderId:any,
 }>()
 
 const emit = defineEmits(['createOrder'])
+
+const { cart, closeDrawer } = inject<any>('cartActions')
+
+
 </script>
 
 <template>
@@ -18,12 +24,21 @@ const emit = defineEmits(['createOrder'])
     <div class="bg-white w-96 h-full fixed right-0 top-0 z-20 p-8">
       <DrawerHead />
 
-      <infoBlock
-        v-if="!totalPrice"
-        title="Корзиана пуста"
-        description="Добавьте товары"
-        image-url="/package-icon.png"
-      />
+      <div v-if="!totalPrice || orderId">
+        <infoBlock
+          v-if="!totalPrice && !orderId"
+          title="Корзина пуста"
+          description="Добавьте товары"
+          image-url="/package-icon.png"
+        />
+
+        <infoBlock
+          v-if="orderId"
+          title="Заказ оформлен"
+          :description="`Ваш заказ ${orderId} скоро будет передан`"
+          image-url="/order-success-icon.png"
+        />
+      </div>
 
       <DrawerList />
 

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed, onMounted, provide, ref, watch } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
 import axios from 'axios'
 
 import Header from './components/HeaderComponent.vue'
 import Drawer from './components/DrawerComponent.vue'
-import HomePage from './pages/HomePage.vue'
+
 
 //Список товаров
 const cart = ref([])
 const drawerOpen = ref(false)
-
+const orderId = ref(null)
 
 const isCreatingOrder = ref(false)
 
@@ -49,7 +49,7 @@ const createOrder = async () => {
       totalPrice: totalPrice.value
     })
     cart.value = []
-
+    orderId.value = data.id
     return data
   } catch (error) {
     console.log(error)
@@ -88,6 +88,7 @@ watch(
 <template>
   <Drawer
     v-if="drawerOpen"
+    :orderId="orderId"
     :totalPrice="totalPrice"
     :vat="vatPrice"
     @createOrder="createOrder"
