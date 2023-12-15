@@ -33,7 +33,7 @@ const { cart, closeDrawer } = inject<any>('cartActions')
         />
 
         <infoBlock
-          v-if="orderId"
+          v-if="orderId "
           title="Заказ оформлен"
           :description="`Ваш заказ ${orderId} скоро будет передан`"
           image-url="/order-success-icon.png"

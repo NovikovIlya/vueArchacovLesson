@@ -60,6 +60,7 @@ const createOrder = async () => {
 
 const closeDrawer = () => {
   drawerOpen.value = false
+  orderId.value = null
 }
 
 const openDrawer = () => {
